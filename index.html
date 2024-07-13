@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图床</title>
+</head>
+<body>
+    <h1>上传图片</h1>
+    <form id="uploadForm">
+        <input type="file" id="fileInput" accept="image/*" required />
+        <button type="submit">上传</button>
+    </form>
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const file = document.getElementById('fileInput').files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                alert(`图片上传成功: ${result.url}`);
+            } else {
+                alert(`图片上传失败: ${result.error}`);
+            }
+        });
+    </script>
+</body>
+</html>
